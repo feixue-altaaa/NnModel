@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from pandas.plotting import radviz
 '''
     构建一个具有1个隐藏层的神经网络，隐层的大小为10
-    输入层为4个特征，输出层为3个分类
-    (1,0,0)为第一类，(0,1,0)为第二类，(0,0,1)为第三类
+    输入层为106个特征，输出层为2个分类
+    (0,0)为第一类，(0,1)为第二类
 '''
 
 
@@ -160,7 +160,7 @@ def predict(parameters, x_test, y_test):
 
     count = 0
     for k in range(0, n_cols):
-        if output[0][k] == y_test[0][k] and output[1][k] == y_test[1][k] and output[2][k] == y_test[2][k]:
+        if output[0][k] == y_test[0][k] and output[1][k] == y_test[1][k]:
             count = count + 1
         else:
             print('错误分类样本的序号：', k + 1)
@@ -219,14 +219,11 @@ def result_visualization(x_test, y_test, result):
 
 if __name__ == "__main__":
     # 读取数据
-    data_set = pd.read_csv('D:\\rjaz\Pycharm\\code\\bp\\bpnn_V2数据集\\iris_training.csv', header=None)
+    data_set = pd.read_csv('D:\\rjaz\\Pycharm\\code\\bp\\lc数据集\\lc_training.csv', header=None)
 
     # 第1种取数据方法：
     X = data_set.iloc[:, 0:4].values.T          # 前四列是特征，T表示转置
-    print("输出X")
-    print(data_set.iloc[:, 0:4].values)
     Y = data_set.iloc[:, 4:].values.T           # 后三列是标签
-    print(data_set.iloc[:, 4:5].values.T)
 
     # 第2种取数据方法：
     # X = data_set.ix[:, 0:3].values.T
@@ -244,15 +241,12 @@ if __name__ == "__main__":
     # 开始训练
     start_time = datetime.datetime.now()
     # 输入4个节点，隐层10个节点，输出3个节点，迭代10000次
-    parameters = nn_model(X, Y, n_h=10, n_input=4, n_output=3, num_iterations=10000, print_cost=True)
-
-
-
+    parameters = nn_model(X, Y, n_h=5, n_input=4, n_output=2, num_iterations=10000, print_cost=True)
     end_time = datetime.datetime.now()
     print("用时：" + str((end_time - start_time).seconds) + 's' + str(round((end_time - start_time).microseconds / 1000)) + 'ms')
 
     # 对模型进行测试
-    data_test = pd.read_csv('D:\\rjaz\\Pycharm\\code\\bp\\bpnn_V2数据集\\iris_test.csv', header=None)
+    data_test = pd.read_csv('D:\\rjaz\\Pycharm\\code\\bp\\lc数据集\\lc_test.csv', header=None)
     x_test = data_test.iloc[:, 0:4].values.T
     y_test = data_test.iloc[:, 4:].values.T
     y_test = y_test.astype('uint8')
@@ -260,4 +254,4 @@ if __name__ == "__main__":
     result = predict(parameters, x_test, y_test)
 
     # 分类结果可视化
-    result_visualization(x_test, y_test, result)
+    #result_visualization(x_test, y_test, result)
